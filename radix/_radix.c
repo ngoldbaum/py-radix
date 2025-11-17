@@ -438,7 +438,7 @@ static PyObject *
 Radix_search_exact(RadixObject *self, PyObject *args, PyObject *kw_args)
 {
         radix_node_t *node;
-        RadixNodeObject *node_obj;
+        PyObject *node_obj;
         prefix_t lprefix, *prefix;
         static char *keywords[] = { "network", "masklen", "packed", NULL };
 
@@ -457,11 +457,11 @@ Radix_search_exact(RadixObject *self, PyObject *args, PyObject *kw_args)
                 node_obj = Py_None;
         }
         else {
-                node_obj = node->data;
+                node_obj = (PyObject *)node->data;
         }
         Py_XINCREF(node_obj);
         Py_END_CRITICAL_SECTION();
-        return (PyObject *)node_obj;
+        return node_obj;
 }
 
 PyDoc_STRVAR(Radix_search_best_doc,
@@ -478,7 +478,7 @@ static PyObject *
 Radix_search_best(RadixObject *self, PyObject *args, PyObject *kw_args)
 {
         radix_node_t *node;
-        RadixNodeObject *node_obj;
+        PyObject *node_obj;
         prefix_t lprefix, *prefix;
         static char *keywords[] = { "network", "masklen", "packed", NULL };
 
@@ -497,11 +497,11 @@ Radix_search_best(RadixObject *self, PyObject *args, PyObject *kw_args)
                 node_obj = Py_None;
         }
         else {
-                node_obj = node->data;
+                node_obj = (PyObject *)node->data;
         }
         Py_XINCREF(node_obj);
         Py_END_CRITICAL_SECTION();
-        return (PyObject *)node_obj;
+        return node_obj;
 }
 
 PyDoc_STRVAR(Radix_search_worst_doc,
@@ -518,7 +518,7 @@ static PyObject *
 Radix_search_worst(RadixObject *self, PyObject *args, PyObject *kw_args)
 {
         radix_node_t *node;
-        RadixNodeObject *node_obj;
+        PyObject *node_obj;
         prefix_t lprefix, *prefix;
         static char *keywords[] = { "network", "masklen", "packed", NULL };
 
@@ -537,11 +537,11 @@ Radix_search_worst(RadixObject *self, PyObject *args, PyObject *kw_args)
                 node_obj = Py_None;
         }
         else {
-                node_obj = node->data;
+                node_obj = (PyObject *)node->data;
         }
         Py_XINCREF(node_obj);
         Py_END_CRITICAL_SECTION();
-        return (PyObject *)node_obj;
+        return node_obj;
 }
 
 static int
