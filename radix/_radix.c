@@ -143,8 +143,8 @@ Radix_parent(RadixNodeObject *self, void *closure)
                 else
                         break;
         }
-        Py_END_CRITICAL_SECTION();
         Py_XINCREF(ret);
+        Py_END_CRITICAL_SECTION();
         return ret;
 }
 static PyMemberDef RadixNode_members[] = {
@@ -420,9 +420,8 @@ Radix_delete(RadixObject *self, PyObject *args, PyObject *kw_args)
             self->gen_id++;
         }
 
-        Py_END_CRITICAL_SECTION();
-
         Py_XINCREF(ret);
+        Py_END_CRITICAL_SECTION();
         return ret;
 }
 
@@ -454,13 +453,14 @@ Radix_search_exact(RadixObject *self, PyObject *args, PyObject *kw_args)
                 return NULL;
         Py_BEGIN_CRITICAL_SECTION(self);
         node = radix_search_exact(self->rt, prefix);
-        Py_END_CRITICAL_SECTION();
         if (node == NULL || node->data == NULL) {
-                Py_INCREF(Py_None);
-                return Py_None;
+                node_obj = Py_None;
         }
-        node_obj = node->data;
+        else {
+                node_obj = node->data;
+        }
         Py_XINCREF(node_obj);
+        Py_END_CRITICAL_SECTION();
         return (PyObject *)node_obj;
 }
 
@@ -493,13 +493,14 @@ Radix_search_best(RadixObject *self, PyObject *args, PyObject *kw_args)
                 return NULL;
         Py_BEGIN_CRITICAL_SECTION(self);
         node = radix_search_best(self->rt, prefix);
-        Py_END_CRITICAL_SECTION();
         if (node == NULL || node->data == NULL) {
-                Py_INCREF(Py_None);
-                return Py_None;
+                node_obj = Py_None;
         }
-        node_obj = node->data;
+        else {
+                node_obj = node->data;
+        }
         Py_XINCREF(node_obj);
+        Py_END_CRITICAL_SECTION();
         return (PyObject *)node_obj;
 }
 
@@ -532,13 +533,14 @@ Radix_search_worst(RadixObject *self, PyObject *args, PyObject *kw_args)
                 return NULL;
         Py_BEGIN_CRITICAL_SECTION(self);
         node = radix_search_worst(self->rt, prefix);
-        Py_END_CRITICAL_SECTION();
         if (node == NULL || node->data == NULL) {
-                Py_INCREF(Py_None);
-                return Py_None;
+                node_obj = Py_None;
         }
-        node_obj = node->data;
+        else {
+                node_obj = node->data;
+        }
         Py_XINCREF(node_obj);
+        Py_END_CRITICAL_SECTION();
         return (PyObject *)node_obj;
 }
 
@@ -834,13 +836,13 @@ RadixIter_iternext(RadixIterObject *self)
 
         if (node->prefix == NULL || node->data == NULL)
                 goto again;
-  done:;
-        Py_END_CRITICAL_SECTION();
-
+  done:
         if (ret == Py_None) {
                 ret = node->data;
         }
         Py_XINCREF(ret);
+        Py_END_CRITICAL_SECTION();
+
         return (ret);
 }
 
